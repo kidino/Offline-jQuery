@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="js/jquery.js"></script>
+    <style>
+    .offline { background-color: #ccc; color: #333; }
+    .online { background-color: #f0f; color: #000; }
+    
+    </style>
+</head>
+<body>
+    
+    <h1>Offline Testing</h1>
+    
+    <div class="check-offline">
+        
+        <div class="offline">
+            you are offline
+            
+        </div>
+        
+        <div class="online">
+            
+            the internet is fine
+            
+        </div>
+        
+    </div>
+    
+    <h2>nothing here</h2>
+    
+    <div class="check-offline">
+        
+        <div class="offline">
+            you are offline 22222
+            
+        </div>
+        
+        <div class="online">
+            
+            the internet is fine 111111
+            
+        </div>
+        
+    </div>
+        
+    
+    <div id="info"></div>
+    
+    <script>
+        // you can use an empty file or for desktop or phonegap,
+        // you need to use a url that allows CORS
+        
+        var url = "http://some-url-with-cors-access.com/file.html";
+        function check_offline(){
+            var unix = Math.round(+new Date()/1000);
+            $('#info').append(unix + '<br />');
+            var jqxhr = $.ajax( url+"?"+unix )
+              .done(function() {                
+                $('.check-offline .online:hidden').fadeIn();
+                $('.check-offline .offline:visible').fadeOut();
+              })
+              .fail(function() {
+                $('.check-offline .online:visible').fadeOut();
+                $('.check-offline .offline:hidden').fadeIn();
+              })
+              .always(function(){
+                setTimeout(function(){ check_offline(); }, 5000);
+              });
+        }
+        
+        $(document).ready(function(){
+            check_offline();
+        });
+        
+    </script>
+    
+</body>
+</html>
